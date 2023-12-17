@@ -1,0 +1,71 @@
+h1{
+	text-align: center;
+	font-size: 48px;
+	color: white;
+}
+
+body{
+	background-color: #52b2ea;
+}
+
+.colorExample{
+	padding: 20px;
+	width: 30px;
+}
+
+.colorGuid{
+	display: flex;
+	justify-content: center;
+}
+	
+.ligand{
+	font-size:38px;
+	color: white;
+	padding-right: 35px;
+	padding-left: 15px;
+}
+
+#button{
+	text-align: center;
+	margin-left: auto; 
+	margin-right: auto; 
+	margin-top: 50px; 
+}
+
+button{
+	font-size: 20px;
+	border: #2b2949 4px double;
+}
+
+#gameBoard{
+	margin-top: 50px;
+}
+
+table{
+	border: solid 5px brown; 
+	border-collapse: collapse;
+}
+
+td, th{
+	border: solid 2px brown;
+}
+
+.userGuess{
+	display: flex;
+	justify-content: center;
+}
+.colorGuess{
+	justify-content: center;
+	font-size: 38px;
+	color: white;
+	text-align: center;
+}
+.userScore{
+	font-size: 38px;
+	color: white;
+	margin-left: 20px;
+}
+.userScoreNum{
+	padding-left: 10px;
+	margin-right: 24px;
+}

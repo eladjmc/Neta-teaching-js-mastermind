@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	  <title>Mastermind</title>
+	  <link rel="stylesheet" href="mastermindAnswer.css">
+	  <meta charset="utf-8">
+	  <meta name="author" content="   ">
+	</head>
+	<body>
+		<h1> Mastermind </h1>
+		<div class="colorGuid">
+			<img class="colorExample" src="picture1.png">
+			<img class="colorExample" src="picture2.png">
+			<img class="colorExample" src="picture3.png">
+			<img class="colorExample" src="picture4.png">
+		</div>
+		<div class="colorGuid">
+			<span class="ligand"> 1 </span>
+			<span class="ligand"> 2 </span>
+			<span class="ligand"> 3 </span>
+			<span class="ligand"> 4 </span>
+		</div>
+		
+		<div id="button"> 
+			 <button onclick="startGuessRound()">Enter a guess</button> 
+		</div>
+		
+		<div id="gameBoard" class="colorGuid">
+			<table id="guessBoard">
+				<tr>
+					<th>Guesses</th>
+					<th>Number of right colors</th>
+				</tr>
+				
+			</table>
+		</div>
+	
+		<script src="mastermindAnswer.js"></script>
+	</body>
+</html>

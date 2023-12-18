@@ -1,169 +1,135 @@
-//start game//
+// Constants
+const MAX_COLOR_CODE = 4;
+const MAX_COLOR_CODE_OVER_INDEX = 5
+const GUESS_SIZE = 4;
+const PROMPT_MESSAGE = "Please enter the number for color ";
 
-//ask computer to pick a code
+// Global Variables
 let secretCode = [];
-createSecretCode();
-console.log("secret code "+ secretCode); 
-
-
-//user guess
 let userGuessArray = [];
-
-
-//Guessing round //
-let colorGuessesNum = 0;
+let totalScore = 0;
 let correctAnswers = 0;
 let pictureNames = [];
+let checkGuessResult = []; // Adding this to store the results of checkGuess
 
-
-function startGuessRound(){
-
-	//ask user for numbers
-	userGuess();
-
-	//check guess
-	colorGuessesNum = 0; //correct color
-	correctAnswers = 0; //correct color and position
-	let checkGuessResult = [];
-	checkGuess();
-
-	// show on screen //
-	//pick user guess color-pictures
-	pictureNames = [];
-	userColorPictures();
-
-	//add row with user color-guess and number of right color guesses
-	addGuessRow();
-
-	//add row with the computer feedback
-	addFeedbackRow();
-
-	//check win
-	checkWin();
+// Start Game
+function startGame() {
+    secretCode = createSecretCode();
+    console.log("Secret code: " + secretCode);
 }
 
-////////// functions //////////////
-
-//create secret code function
-function createSecretCode(){
-    for (let i = 0; i < 4; i++) {
-        secretCode.push(getRandomInt(1, 5));
+// Create secret code function
+function createSecretCode() {
+    let code = [];
+    for (let i = 0; i < GUESS_SIZE; i++) {
+        code.push(getRandomInt(1, MAX_COLOR_CODE_OVER_INDEX));
     }
+    return code;
 }
 
-
-//get random numbers help function
+// Get random numbers helper function
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// Start Guess Round
+function startGuessRound() {
+    userGuessArray = getUserGuesses();
+    checkGuess();
 
-function userGuess(){
-	userGuessArray = [];
-	
-	for (let g = 0; g < 4; g++){
-		userGuessArray.push(promptUser()); 
-	}
-	console.log("user guess "+ userGuessArray);
+    pictureNames = getUserColorPictures();
+    addGuessRow();
+    addFeedbackRow();
+
+    checkWin();
 }
 
-//prompt for user help-function
-function promptUser(){
-	return parseInt(prompt("Please enter the first number"));
+// Get user guesses
+function getUserGuesses() {
+    let guesses = [];
+    for (let i = 0; i < GUESS_SIZE; i++) {
+        guesses.push(promptUser(i));
+    }
+    return guesses;
 }
 
-//check guess
+// Prompt for user input
+function promptUser(index) {
+    let guess;
+    do {
+        guess = parseInt(prompt(PROMPT_MESSAGE + (index + 1)));
+    } while (isNaN(guess) || guess < 1 || guess > MAX_COLOR_CODE);
+    return guess;
+}
+
+// Check user guess against secret code
 function checkGuess() {
-	checkGuessResult = [];
-	for (let i = 0; i < 4; i++) {
-		if (userGuessArray[i] === secretCode[i]) {
-			checkGuessResult.push(2);
-			colorGuessesNum++;
-			correctAnswers++;
-		}
-		else if (secretCode.indexOf(userGuessArray[i]) > -1) {
-			checkGuessResult.push(1);
-			colorGuessesNum++;
-		}
-		else {
-			checkGuessResult.push(0);
-		}
-	}
-	console.log("checkGuessResult " + checkGuessResult);
+    checkGuessResult = []; // Reset for new round
+    totalScore = 0; // Reset for new round
+    correctAnswers = 0; // Reset for new round
+
+    for (let i = 0; i < GUESS_SIZE; i++) {
+        if (userGuessArray[i] === secretCode[i]) {
+            checkGuessResult.push(2);
+            totalScore += 2;
+            correctAnswers++;
+        } else if (secretCode.includes(userGuessArray[i])) {
+            checkGuessResult.push(1);
+            totalScore++;
+        } else {
+            checkGuessResult.push(0);
+        }
+    }
 }
 
-
-//pick user color-pictures
-function userColorPictures(){
-	
-	for (let j = 0; j < 4; j++) {
-		switch (userGuessArray[j]){
-			case 1:
-				pictureNames.push("picture1.png");
-			break;
-			case 2:
-				pictureNames.push("picture2.png");
-			break;
-			case 3:
-				pictureNames.push("picture3.png");
-			break;
-			case 4:
-				pictureNames.push("picture4.png");
-				break;
-			default:
-				pictureNames.push("picture1.png");
-        break;
-		}
-	}
-	
+// Get user color pictures
+function getUserColorPictures() {
+    return userGuessArray.map(guess => `picture${guess}.png`);
 }
 
+// Function to add a guess row to the table
+function addGuessRow() {
+    let table = document.getElementById("guessBoard");
+    let row = table.insertRow(-1);
+    let cell = row.insertCell(0);
 
-function addGuessRow(){
-	//get table element
-	let table = document.getElementById("guessBoard");
-	//add row in the end of the table
-	let row1 = table.insertRow(-1);
-	//insert two cells
-	let cell1 = row1.insertCell(0);
-	let cell2 = row1.insertCell(1);
-	cell2.rowSpan = 2;
-	
-	//add user's color guess
-	cell1.innerHTML = `<div class="userGuess">
-								<img class="colorExample" src=` + pictureNames[0] + `>
-								<img class="colorExample" src=` + pictureNames[1] + `>
-								<img class="colorExample" src=` + pictureNames[2] + `>
-								<img class="colorExample" src=` + pictureNames[3] + `>
-							</div>`;
-	
-	//insert the number of right color guesses
-	cell2.innerHTML = `<div class="colorGuess">` + colorGuessesNum; + `
-						</div>`
+    let imgHTML = "";
+    for (let i = 0; i < pictureNames.length; i++) {
+        imgHTML += `<img class="colorExample" src="${pictureNames[i]}">`;
+    }
+
+    cell.innerHTML = `<div class="userGuess">${imgHTML}</div>`;
+
+    let scoreCell = row.insertCell(1);
+    scoreCell.rowSpan = 2;
+    scoreCell.innerHTML = `<div class="colorGuess">${totalScore}</div>`;
 }
 
-function addFeedbackRow(){
-	//get table element
-	let table = document.getElementById("guessBoard");
-	//create second row
-	let row2 = table.insertRow(-1);
-	//create new cell
-	let cell3 = row2.insertCell(0);
-	//insert the feedback for user
-	cell3.innerHTML = `<div class="userScore">
-								<span class="userScoreNum">` + checkGuessResult[0] + `</span>
-								<span class="userScoreNum">` + checkGuessResult[1] + `</span>
-								<span class="userScoreNum">` + checkGuessResult[2] + `</span>
-								<span class="userScoreNum">` + checkGuessResult[3] + `</span>
-							</div>`;
+// Function to add a feedback row to the table
+function addFeedbackRow() {
+    let table = document.getElementById("guessBoard");
+    let row = table.insertRow(-1);
+    let cell = row.insertCell(0);
+
+    let feedbackHTML = "";
+    for (let i = 0; i < checkGuessResult.length; i++) {
+        feedbackHTML += `<span class="userScoreNum">${checkGuessResult[i]}</span>`;
+    }
+
+    cell.innerHTML = `<div class="userScore">${feedbackHTML}</div>`;
 }
 
-function checkWin(){
-	if( correctAnswers === 4){
-		winMessage();
-	}
+// Check if user has won
+function checkWin() {
+    if (correctAnswers === GUESS_SIZE) {
+        winMessage();
+    }
 }
 
-function winMessage(){
-	alert("YOU WIN! Press F5 to play again");
+// Display winning message
+function winMessage() {
+    alert("YOU WIN! Press F5 to play again");
 }
+
+// Initialize game on load
+startGame();

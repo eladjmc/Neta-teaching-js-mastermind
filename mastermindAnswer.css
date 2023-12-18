@@ -66,6 +66,9 @@ td, th{
 	margin-left: 20px;
 }
 .userScoreNum{
-	padding-left: 10px;
-	margin-right: 24px;
+	box-sizing: border-box;
+	padding: 15px;
+	margin-right: 20px;
+	text-align: center;
+
 }

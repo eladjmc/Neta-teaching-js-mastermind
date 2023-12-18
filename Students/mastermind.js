@@ -4,7 +4,7 @@
 
 
 // Global Variables
-// Declare global variables like secretCode, userGuessArray, totalScore, correctAnswers, pictureNames, checkGuessResult
+// Declare global variables secretCode, userGuessArray, totalScore, correctAnswers, pictureNames, checkGuessResult
 
 
 
@@ -57,6 +57,7 @@
 // The function should display a win message if the user guesses all colors correctly
 
 
+// Helper Functions - You need to use this function to display result to the screen. You don't need to change them.
 
 // Function to add a guess row to the table
 function addGuessRow() {

@@ -44,7 +44,7 @@ function promptUser(index) {
 
 // Create get user guesses function
 function getUserGuesses() {
-    let guesses = [];
+    const guesses = [];
     for (let i = 0; i < GUESS_SIZE; i++) {
         guesses.push(promptUser(i));
     }

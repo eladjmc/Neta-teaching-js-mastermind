@@ -74,7 +74,35 @@ function checkGuess() {
 
 // Create Get user color pictures function to return the colors that user entered in prompt
 function getUserColorPictures() {
-    return userGuessArray.map(guess => `picture${guess}.png`);
+    // return userGuessArray.map(guess => `picture${guess}.png`); 
+
+    const pictureFilenames = []; // Array to hold the filenames
+
+    for (let i = 0; i < userGuessArray.length; i++) {
+        let guess = userGuessArray[i];
+        let filename;
+
+        switch(guess) {
+            case 1:
+                filename = 'picture1.png';
+                break;
+            case 2:
+                filename = 'picture2.png';
+                break;
+            case 3:
+                filename = 'picture3.png';
+                break;
+            case 4:
+                filename = 'picture4.png';
+                break;
+            default:
+                filename = 'picture1.png'; // Default picture for unmatched cases
+        }
+
+        pictureFilenames.push(filename); // Add the determined filename to the array
+    }
+
+    return pictureFilenames; // Return the array of filenames
 }
 
 
